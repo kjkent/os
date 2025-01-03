@@ -1,0 +1,2 @@
+collections:
+ - name: kewlfft.aur # Ansible module providing aur management 
