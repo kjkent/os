@@ -1,0 +1,30 @@
+- name: Install 3D printing packages (AUR)
+  kewlfft.aur.aur:
+    name:
+      - cura-bin
+      - orca-slicer
+
+- name: Create uaccess udev rule for /dev/tty3DPrinter
+  ansible.builtin.copy:
+    content: |
+      SUBSYSTEM=="tty", ATTRS{idVendor}=="1a86", ATTRS{idProduct}=="7523", TAG+="uaccess", SYMLINK+="tty3dPrinter"
+    path: /etc/udev/rules.d/70-3d-printer.rules
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Open firewall ports for Klipper components
+  block:
+    - name: Open port 80 for Mainsail/Fluidd
+      ansible.posix.firewalld:
+        service: http
+        state: enabled
+        permanent: true
+        immediate: true
+
+    - name: Open port 7125 for Moonraker
+      ansible.posix.firewalld:
+        port: 7125/tcp
+        state: enabled
+        permanent: true
+        immediate: true

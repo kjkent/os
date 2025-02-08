@@ -1,0 +1,11 @@
+- name: Prepare hard disk and configure Arch Linux
+  become: true
+  vars:
+    drive: ""
+    hostname: ""
+    user: ""
+    password: ""
+  block:
+    - name: Ensure optimum NVME logical sector size
+      when: 
+      command: ["", "{{}}"]

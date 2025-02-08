@@ -1,0 +1,4 @@
+[project]
+name = "os"
+dynamic = ["version"]
+dependencies = ["ansible-dev-tools"]
