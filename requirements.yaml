@@ -1,2 +1,3 @@
 collections:
- - name: kewlfft.aur # Ansible module providing aur management 
+ - kewlfft.aur # `kewlfft.aur.aur`
+ - community.general # `community.general.pacman`
