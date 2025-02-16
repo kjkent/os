@@ -1,0 +1,22 @@
+- name: Install CPU microcode package
+  tasks:
+    - name: Install AMD microcode package
+      when: "'AuthenticAMD' in ansible_processor"
+      ansible.builtin.package:
+        - name: amd-ucode
+          state: present
+        - name: intel-ucode
+          state: absent
+    - name: Install Intel microcode package
+      when: "'GenuineIntel' in ansible_processor"
+      ansible.builtin.package:
+        - name: amd-ucode
+          state: absent
+        - name: intel-ucode
+          state: present
+
+- name: Install fwupd
+  ansible.builtin.package:
+    - name: fwupd
+      state: present
+

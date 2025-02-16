@@ -1,0 +1,10 @@
+- name: Provision / update hosts
+  hosts: '{{ target | default("all") }}'
+  become: true
+  become_user: root
+  roles:
+    - 3d_printing
+    - audio
+    - boot
+    - bluetooth
+    - cpu

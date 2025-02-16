@@ -1,17 +1,25 @@
 - name: Install audio packages (pacman)
-  community.general.pacman:
+  ansible.builtin.package:
+    state: present
     name:
       - alsa-utils
       - audacity
+      - dconf
       - easyeffects
       - ffmpeg
       - imv
       - mpv
+      - pamixer
       - pavucontrol
+      - pipewire
+      - pipewire-pulse
+      - pipewire-alsa
       - playerctl
       - vlc
+      - wireplumber
 
 - name: Install audio packages (AUR)
+  when: '"Arch Linux" in ansible_distribution'
   kewlfft.aur.aur:
     name:
       - spotify

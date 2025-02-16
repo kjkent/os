@@ -21,6 +21,7 @@
         state: enabled
         permanent: true
         immediate: true
+        zone: home
 
     - name: Open port 7125 for Moonraker
       ansible.posix.firewalld:
@@ -28,3 +29,5 @@
         state: enabled
         permanent: true
         immediate: true
+        zone: home
+

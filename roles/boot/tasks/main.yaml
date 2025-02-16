@@ -1,0 +1,4 @@
+- name: Install GRUB
+  when: '"hostvars[inventory_hostname].grub.enable" == true'
+  ansible.builtin.command:
+    cmd: grub-install {{ hostvars[inventory_hostname].grub.disk }}
