@@ -19,7 +19,9 @@
       - wireplumber
 
 - name: Install audio packages (AUR)
-  when: '"Arch Linux" in ansible_distribution'
+  when: '"Arch" in ansible_distribution'
+  become: true
+  become_user: 'ansible_aur'
   kewlfft.aur.aur:
     name:
       - spotify

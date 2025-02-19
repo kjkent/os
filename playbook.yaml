@@ -3,8 +3,9 @@
   become: true
   become_user: root
   roles:
-    - 3d_printing
+    - aur
     - audio
     - boot
-    - bluetooth
     - cpu
+    - devel
+    - print_3d

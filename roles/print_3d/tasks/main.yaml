@@ -8,10 +8,10 @@
   ansible.builtin.copy:
     content: |
       SUBSYSTEM=="tty", ATTRS{idVendor}=="1a86", ATTRS{idProduct}=="7523", TAG+="uaccess", SYMLINK+="tty3dPrinter"
-    path: /etc/udev/rules.d/70-3d-printer.rules
+    dest: /etc/udev/rules.d/70-3d-printer.rules
     owner: root
     group: root
-    mode: 0644
+    mode: '0644'
 
 - name: Open firewall ports for Klipper components
   block:
@@ -30,4 +30,3 @@
         permanent: true
         immediate: true
         zone: home
-

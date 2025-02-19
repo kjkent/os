@@ -1,0 +1,45 @@
+- name: Install development packages (pacman)
+  ansible.builtin.package:
+    state: present
+    name:
+      - ansible
+      - ansible-lint
+      - arduino-ide
+      - base-devel
+      - clang
+      - dfu-util
+      - direnv
+      - docker
+      - docker-compose
+      - espflash
+      - esptool
+      - flashprog
+      - flashrom
+      - git
+      - hexyl
+      - meson
+      - ninja
+      - neovide
+      - opentofu
+      - pulseview
+      - python
+      - shellcheck
+      - sigrok-firmware-fx2lafw
+      - tinyxxd
+      - uv
+      - wireshark-qt
+
+- name: Install development packages (AUR)
+  become: true
+  become_user: ansible_aur
+  kewlfft.aur.aur:
+    state: present
+    name:
+      - android-studio
+      - biome
+      - bruno-bin
+      - fritzing
+      - httptoolkit-bin
+      - processing-bin
+      - python-adafruit-nrfutil
+      - pyupgrade

@@ -1,25 +1,25 @@
-# Prep system for AUR management. Requires user that 
+# Prep system for AUR management. Requires user that
 # can access `sudo pacman` without password.
 # https://github.com/kewlfft/ansible-aur
 
 - name: Create user `ansible_aur` for building aur packages
-  become: yes
   ansible.builtin.user:
-    name: ansible_aur
-    create_home: no
+    name: 'ansible_aur'
+    create_home: true 
 
 - name: Allow ansible_aur user to run `sudo pacman` without password
-  become: yes
   ansible.builtin.lineinfile:
     path: /etc/sudoers.d/ansible_aur-allow-pacman
     state: present
     line: "ansible_aur ALL=(ALL) NOPASSWD: /usr/bin/pacman"
     validate: /usr/sbin/visudo -cf %s
-    create: yes
-    mode: 0440
+    create: true
+    mode: '0440'
 
 - name: Install yay using makepkg if it isn't installed already
+  become: true
+  become_user: 'ansible_aur'
   kewlfft.aur.aur:
     name: yay
     use: makepkg
-    state: present
+    state: present 

@@ -1,8 +1,0 @@
-- name: Full system upgrade
-  hosts: control
-  become: true
-
-  tasks:
-    - community.general.pacman:
-      update_cache: true
-      upgrade: true
