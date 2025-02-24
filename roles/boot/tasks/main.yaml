@@ -2,3 +2,30 @@
   ansible.builtin.package:
     state: present
     name: dracut
+
+- name: Configure global dracut settings
+  ansible.builtin.blockinfile:
+    path: /etc/dracut.conf
+    create: true
+    mode: '0600'
+    block: |
+      hostonly="yes"
+      hostonly_cmdline="no"
+      enhanced_cpio="yes"
+      parallel="yes"
+      omit_dracutmodules+=" brltty "
+
+- name: Detect UEFI/BIOS
+  ansible.builtin.stat:
+    path: /sys/firmware/efi
+    register: uefi_boot
+
+- name: Enable UKI generation for UEFI systems
+  when: uefi_boot.stat.exists
+  ansible.builtin.blockinfile:
+    path: /etc/dracut.conf
+    create: true
+    mode: '0600'
+    block: |
+      uefi="yes"
+      machine_id="no"

@@ -1,14 +1,28 @@
-- name: Install AMD microcode package
+- name: AMD-specific configuration
   when: '"AuthenticAMD" in ansible_processor'
-  ansible.builtin.package:
-    name: amd-ucode
-    state: present
+  ansible.builtin.block:
+    - name: Install AMD-specific packages
+      ansible.builtin.package:
+        name: 
+          - amd-ucode
+          - zenpower
+        state: present
+
+    - name: Configure AMD-specific initramfs settings
+      ansible.builtin.blockinfile:
+        path: /etc/dracut.conf
+        create: true
+        mode: '0600'
+        block: |
+          kernel_cmdline+=" amd_pstate=active module_blacklist=k10temp "
+          omit_drivers+=" k10temp "
+          add_drivers+=" zenpower "
 
 - name: Install Intel microcode package
   when: '"GenuineIntel" in ansible_processor'
   ansible.builtin.package:
-    name: amd-ucode
-    state: absent
+    name: intel-ucode
+    state: present
 
 - name: Install fwupd
   ansible.builtin.package:

@@ -1,9 +1,3 @@
-- name: Install 3D printing packages (AUR)
-  kewlfft.aur.aur:
-    name:
-      - cura-bin
-      - orca-slicer
-
 - name: Create uaccess udev rule for /dev/tty3DPrinter
   ansible.builtin.copy:
     content: |
