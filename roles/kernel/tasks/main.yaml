@@ -1,0 +1,12 @@
+- name: Set misc kernel sysctls
+  ansible.posix.sysctl:
+    - name: kernel.sysrq
+      value: '1'
+    - name: net.core.rmem_max
+      value: '7500000'
+    - name: net.core.wmem_max
+      value: '7500000'
+    - name: vm.max_map_count
+      value: '2147483642'
+    - name: vm.overcommit_memory
+      value: '1'

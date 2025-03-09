@@ -1,0 +1,25 @@
+- name: "Install base system utils"
+  ansible.builtin.package:
+    name:
+      - parted
+      - gptfdisk
+      - gzip
+      - unzip
+      - unrar
+      - xfsprogs
+      - xz
+      - duf
+      - ncdu
+      - ripgrep
+      - file-roller
+      - rsync
+      - tree
+      - wget
+      - eza
+      - zlib-ng
+
+- name: "Set console keyboard layout"
+  ansible.builtin.copy:
+    content: {{ kb_layout.console }}
+    dest: /etc/vconsole
+    force: true

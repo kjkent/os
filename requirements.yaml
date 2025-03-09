@@ -1,3 +1,4 @@
 collections:
- - kewlfft.aur # `kewlfft.aur.aur`
- - community.general # `community.general.pacman`
+ - kewlfft.aur # `.aur`
+ - community.general # `.pacman`
+ - ansible.posix # `.sysctl`

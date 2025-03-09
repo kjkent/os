@@ -1,11 +1,15 @@
 - name: Provision / update hosts
-  hosts: '{{ target | default("all") }}'
   become: true
   become_user: root
+  hosts: '{{ target | default("all") }}'
   roles:
     - aur
     - audio
     - boot
     - cpu
     - devel
+    - kernel
     - print_3d
+  vars:
+    rebuild_bootloader: false
+    rebuild_initramfs: false
