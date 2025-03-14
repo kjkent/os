@@ -1,4 +1,4 @@
 collections:
  - kewlfft.aur # `.aur`
- - community.general # `.pacman`
+ - community.general # `.pacman, .locale_gen`
  - ansible.posix # `.sysctl`

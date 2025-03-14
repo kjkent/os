@@ -1,0 +1,19 @@
+- name: "Install base system utils"
+  ansible.builtin.package:
+    name:
+      - parted
+      - gptfdisk
+      - gzip
+      - unzip
+      - unrar
+      - xfsprogs
+      - xz
+      - duf
+      - ncdu
+      - ripgrep
+      - file-roller
+      - rsync
+      - tree
+      - wget
+      - eza
+      - zlib-ng

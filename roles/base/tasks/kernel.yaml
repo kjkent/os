@@ -1,3 +1,15 @@
+- name: Use linux-zen kernel
+  ansible.builtin.block:
+    - name: Install linux-zen kernel
+      ansible.builtin.package:
+        name: linux-zen
+        state: present
+
+    - name: Remove standard linux kernel
+      ansible.builtin.package:
+        name: linux
+        state: absent
+
 - name: Set misc kernel sysctls
   ansible.posix.sysctl:
     - name: kernel.sysrq

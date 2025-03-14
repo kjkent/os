@@ -1,0 +1,10 @@
+- name: Create main user
+  ansible.builtin.user:
+    name: "{{ user.username }}"
+    comment: "{{ user.gitId }}"
+    uid: 1000
+    umask: '0027'
+    create_home: true
+    shell: /usr/bin/zsh
+    groups: wheel
+    password: '!'

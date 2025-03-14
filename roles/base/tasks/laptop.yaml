@@ -1,0 +1,66 @@
+- name: Check if device is a laptop (Linux only)
+  when: ansible_os_family == 'Linux'
+  ansible.builtin.block:
+    - name: Check for battery
+      ansible.builtin.stat:
+        path: /sys/class/power_supply/BAT0
+      register: battery
+    - name: Set laptop fact based on battery presence
+      ansible.builtin.setfact:
+        is_laptop: "{{ battery.stat.exists }}"
+
+- name: Laptop-specific configuration
+  when: is_laptop
+  ansible.builtin.block:
+    - name: Configure TLP
+      ansible.builtin.block:
+        - name: Install TLP
+          ansible.builtin.package:
+          state: present
+          name: tlp
+
+        - name: Mask systemd-rfkill service (conflicts with TLP)
+          ansible.builtin.systemd_service:
+            name: systemd-rfkill.service
+            masked: true
+            state: stopped
+
+        - name: Mask systemd-rfkill socket (conflicts with TLP)
+          ansible.builtin.systemd_service:
+            name: systemd-rfkill.socket
+            masked: true
+            state: stopped
+
+        - name: Enable TLP service
+          ansible.builtin.systemd_service:
+            name: tlp.service
+            enabled: true
+            state: started
+
+    - name: Configure upower
+      ansible.builtin.block:
+        - name: Install upower
+          ansible.builtin.package:
+            state: present
+            name: upower
+
+        - name: Enable upower service
+          ansible.builtin.systemd_service:
+            name: upower.service
+            enabled: true
+            state: started
+
+    - name: Configure acpi_call
+      ansible.builtin.block:
+        - name: Install acpi_call
+          ansible.builtin.package:
+            state: present
+            name: acpi_call
+
+        - name: Load acpi_call at boot
+          ansible.builtin.lineinfile:
+            path: /etc/dracut.conf
+            create: true
+            mode: '0600'
+            state: present
+            line: add_drivers+=" acpi_call "

@@ -4,12 +4,10 @@
   hosts: '{{ target | default("all") }}'
   roles:
     - aur
-    - audio
-    - boot
-    - cpu
+    - base
     - devel
-    - kernel
     - print_3d
   vars:
     rebuild_bootloader: false
     rebuild_initramfs: false
+    user: kjkent

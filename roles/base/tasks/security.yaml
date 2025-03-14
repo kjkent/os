@@ -1,0 +1,103 @@
+- name: Install security-specific packages
+  ansible.builtin.package:
+    state: present
+    name:
+      - libgnome-keyring
+      - libsecret
+      - gnome-keyring
+      - pam_u2f
+      - polkit
+      - polkit-gnome
+      - rtkit
+      - seahorse
+      - sops
+      - tpm2-tss
+      - tpm2-tools
+      - yubikey-manager
+
+- name: Enable & start gnome-keyring-daemon
+  ansible.builtin.systemd_service:
+    - name: gnome-keyring-daemon.service
+      enabled: true
+      state: started
+    - name: gnome-keyring-daemon.socket
+      enabled: true
+      state: started
+
+- name: Create polkit-gnome systemd service
+  ansible.builtin.copy:
+    dest: /etc/systemd/user/polkit-gnome.service
+    mode: '0600'
+    owner: root
+    group: root
+    content: |
+      [Unit]
+      After=graphical-session.target
+      Description=polkit-gnome-authentication-agent-1
+      Wants=graphical-session.target
+      
+      [Service]
+      ExecStart=/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+      Restart=on-failure
+      RestartSec=1
+      TimeoutStopSec=10
+      Type=simple
+      
+      [Install]
+      WantedBy=graphical-session.target
+
+- name: Start polkit-gnome service
+  ansible.builtin.systemd_service:
+    name: polkit-gnome.service
+    enabled: true
+    state: started
+
+- name: Polkit / Allow wheel group to shutdown/reboot system
+  ansible.builtin.copy:
+  dest: /etc/polkit-1/rules.d/60-allow-wheel-power-ctl.rules
+  mode: '0600'
+  owner: root
+  group: root
+  content: |
+    polkit.addRule(function (action, subject) {
+      if (subject.isInGroup("wheel") && [
+        "org.freedesktop.login1.reboot",
+        "org.freedesktop.login1.reboot-multiple-sessions",
+        "org.freedesktop.login1.power-off",
+        "org.freedesktop.login1.power-off-multiple-sessions",
+      ].indexOf(action.id) !== -1) {
+        return polkit.Result.YES;
+      }
+    });
+
+- name: Polkit / Prompt for root password, not user
+  ansible.builtin.copy:
+  dest: /etc/polkit-1/rules.d/49-rootpw.rules
+  mode: '0600'
+  owner: root
+  group: root
+  content: |
+    polkit.addAdminRule(function(action, subject) {
+      return ["unix-user:root"];
+    });
+
+- name: Polkit / Allow libvirtd group to manage libvirtd
+  ansible.builtin.copy:
+  dest: /etc/polkit-1/rules.d/49-libvirtd.rules
+  mode: '0600'
+  owner: root
+  group: root
+  content: |
+    polkit.addRule(function(action, subject) {
+      if (
+        action.id == "org.libvirt.unix.manage"
+        && subject.isInGroup("wheel")
+      ) {
+        return polkit.Result.YES;
+    });
+
+- name: Enable & start rtkit-daemon
+  ansible.builtin.systemd_service:
+    name: rtkit-daemon.service
+    enabled: true
+    state: started

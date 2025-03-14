@@ -1,25 +1,11 @@
-- name: "Install base system utils"
-  ansible.builtin.package:
-    name:
-      - parted
-      - gptfdisk
-      - gzip
-      - unzip
-      - unrar
-      - xfsprogs
-      - xz
-      - duf
-      - ncdu
-      - ripgrep
-      - file-roller
-      - rsync
-      - tree
-      - wget
-      - eza
-      - zlib-ng
-
-- name: "Set console keyboard layout"
-  ansible.builtin.copy:
-    content: {{ kb_layout.console }}
-    dest: /etc/vconsole
-    force: true
+- name: Audio configuration
+  ansible.builtin.include_tasks: 
+    - audio.yaml
+    - boot.yaml
+    - firmware.yaml
+    - kernel.yaml
+    - laptop.yaml
+    - locale.yaml
+    - login.yaml
+    - security.yaml
+    - zram.yaml

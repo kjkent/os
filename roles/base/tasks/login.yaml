@@ -1,0 +1,20 @@
+- name: Install greetd and greetd-tuigreet
+  ansible.builtin.package:
+    state: present
+    name:
+      - greetd
+      - greetd-tuigreet
+
+- name: Configure greetd
+  ansible.builtin.copy:
+    owner: root
+    group: root
+    mode: '0600'
+    content: |
+      [default_session]
+      command = "/usr/bin/tuigreet"
+      user = "{{ user }}"
+
+      [terminal]
+      vt = 1
+
