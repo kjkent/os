@@ -1,3 +1,4 @@
+---
 - name: Install development packages (pacman)
   ansible.builtin.package:
     state: present

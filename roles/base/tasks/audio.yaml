@@ -1,3 +1,4 @@
+---
 - name: Install audio packages (pacman)
   ansible.builtin.package:
     state: present

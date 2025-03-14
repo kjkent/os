@@ -1,11 +1,33 @@
+---
 - name: Audio configuration
-  ansible.builtin.include_tasks: 
-    - audio.yaml
-    - boot.yaml
-    - firmware.yaml
-    - kernel.yaml
-    - laptop.yaml
-    - locale.yaml
-    - login.yaml
-    - security.yaml
-    - zram.yaml
+  ansible.builtin.include_tasks: audio.yaml
+
+- name: Boot configuration
+  ansible.builtin.include_tasks: boot.yaml
+
+- name: Firmware/microcode configuration
+  ansible.builtin.include_tasks: firmware.yaml
+
+- name: Kernel configuration
+  ansible.builtin.include_tasks: kernel.yaml
+
+- name: Laptop-specific configuration
+  ansible.builtin.include_tasks: laptop.yaml
+
+- name: Locale configuration
+  ansible.builtin.include_tasks: locale.yaml
+
+- name: Login manager configuration
+  ansible.builtin.include_tasks: login.yaml
+
+- name: Base packages configuration
+  ansible.builtin.include_tasks: packages.yaml
+
+- name: Base security configuration
+  ansible.builtin.include_tasks: security.yaml
+
+- name: Main user configuration
+  ansible.builtin.include_tasks: user.yaml
+
+- name: Configure zram
+  ansible.builtin.include_tasks: zram.yaml

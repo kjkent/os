@@ -1,6 +1,10 @@
-- name: "Set console keyboard layout"
+---
+- name: Set console keyboard layout
   ansible.builtin.copy:
-    content: {{ kb_layout.console }}
+    mode: "0600"
+    owner: root
+    group: root
+    content: "{{ kb_layout.console }}"
     dest: /etc/vconsole
     force: true
 

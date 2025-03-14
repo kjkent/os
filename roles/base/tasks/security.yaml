@@ -1,3 +1,4 @@
+---
 - name: Install security-specific packages
   ansible.builtin.package:
     state: present
@@ -27,7 +28,7 @@
 - name: Create polkit-gnome systemd service
   ansible.builtin.copy:
     dest: /etc/systemd/user/polkit-gnome.service
-    mode: '0600'
+    mode: "0600"
     owner: root
     group: root
     content: |
@@ -35,14 +36,14 @@
       After=graphical-session.target
       Description=polkit-gnome-authentication-agent-1
       Wants=graphical-session.target
-      
+
       [Service]
       ExecStart=/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
       Restart=on-failure
       RestartSec=1
       TimeoutStopSec=10
       Type=simple
-      
+
       [Install]
       WantedBy=graphical-session.target
 
@@ -55,7 +56,7 @@
 - name: Polkit / Allow wheel group to shutdown/reboot system
   ansible.builtin.copy:
   dest: /etc/polkit-1/rules.d/60-allow-wheel-power-ctl.rules
-  mode: '0600'
+  mode: "0600"
   owner: root
   group: root
   content: |
@@ -73,7 +74,7 @@
 - name: Polkit / Prompt for root password, not user
   ansible.builtin.copy:
   dest: /etc/polkit-1/rules.d/49-rootpw.rules
-  mode: '0600'
+  mode: "0600"
   owner: root
   group: root
   content: |
@@ -84,7 +85,7 @@
 - name: Polkit / Allow libvirtd group to manage libvirtd
   ansible.builtin.copy:
   dest: /etc/polkit-1/rules.d/49-libvirtd.rules
-  mode: '0600'
+  mode: "0600"
   owner: root
   group: root
   content: |

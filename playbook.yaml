@@ -1,3 +1,4 @@
+---
 - name: Provision / update hosts
   become: true
   become_user: root
@@ -10,4 +11,5 @@
   vars:
     rebuild_bootloader: false
     rebuild_initramfs: false
-    user: kjkent
+    user:
+      username: kjkent

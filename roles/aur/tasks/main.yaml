@@ -1,14 +1,16 @@
+---
 # Prep system for AUR management. Requires user that
 # can access `sudo pacman` without password.
 # https://github.com/kewlfft/ansible-aur
 
-- name: Prepare system for AUR packages
-  when: '"Arch" in ansible_distribution'
-  ansible.builtin.block:
+- name: Configure system for AUR and install packages
+  when: "'Arch' in ansible_distribution"
+  block:
     - name: Create user `ansible_aur` for building aur packages
       ansible.builtin.user:
         name: ansible_aur
         create_home: true
+        uid: 1111
 
     - name: Allow ansible_aur user to run `sudo pacman` without password
       ansible.builtin.lineinfile:
@@ -17,7 +19,7 @@
         line: "ansible_aur ALL=(ALL) NOPASSWD: /usr/bin/pacman"
         validate: /usr/sbin/visudo -cf %s
         create: true
-        mode: '0440'
+        mode: "0440"
 
     - name: Install yay using makepkg if it isn't installed already
       become: true
@@ -27,25 +29,24 @@
         use: makepkg
         state: present
 
-- name: Install AUR packages
-  when: '"Arch" in ansible_distribution'
-  become: true
-  become_user: ansible_aur
-  kewlfft.aur.aur:
-    state: present
-    name:
-      # 3D printing
-      - cura-bin
-      - orca-slicer
-      # Audio
-      - spotify
-      - spotx-git
-      # Development
-      - android-studio
-      - biome
-      - bruno-bin
-      - fritzing
-      - httptoolkit-bin
-      - processing-bin
-      - python-adafruit-nrfutil
-      - pyupgrade
+    - name: Install AUR packages
+      become: true
+      become_user: ansible_aur
+      kewlfft.aur.aur:
+        state: present
+        name:
+          # 3D printing
+          - cura-bin
+          - orca-slicer
+          # Audio
+          - spotify
+          - spotx-git
+          # Development
+          - android-studio
+          - biome
+          - bruno-bin
+          - fritzing
+          - httptoolkit-bin
+          - processing-bin
+          - python-adafruit-nrfutil
+          - pyupgrade

@@ -1,9 +1,10 @@
+---
 - name: AMD-specific configuration
   when: '"AuthenticAMD" in ansible_processor'
-  ansible.builtin.block:
+  block:
     - name: Install AMD-specific packages
       ansible.builtin.package:
-        name: 
+        name:
           - amd-ucode
           - zenpower
         state: present
@@ -12,7 +13,7 @@
       ansible.builtin.blockinfile:
         path: /etc/dracut.conf
         create: true
-        mode: '0600'
+        mode: "0600"
         block: |
           kernel_cmdline+=" amd_pstate=active module_blacklist=k10temp "
           omit_drivers+=" k10temp "

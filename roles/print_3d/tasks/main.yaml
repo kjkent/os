@@ -1,3 +1,4 @@
+---
 - name: Create uaccess udev rule for /dev/tty3DPrinter
   ansible.builtin.copy:
     content: |
@@ -5,7 +6,7 @@
     dest: /etc/udev/rules.d/70-3d-printer.rules
     owner: root
     group: root
-    mode: '0644'
+    mode: "0644"
 
 - name: Open firewall ports for Klipper components
   block:

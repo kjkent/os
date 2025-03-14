@@ -1,3 +1,4 @@
+---
 - name: Use linux-zen kernel
   ansible.builtin.block:
     - name: Install linux-zen kernel
@@ -13,12 +14,12 @@
 - name: Set misc kernel sysctls
   ansible.posix.sysctl:
     - name: kernel.sysrq
-      value: '1'
+      value: "1"
     - name: net.core.rmem_max
-      value: '7500000'
+      value: "7500000"
     - name: net.core.wmem_max
-      value: '7500000'
+      value: "7500000"
     - name: vm.max_map_count
-      value: '2147483642'
+      value: "2147483642"
     - name: vm.overcommit_memory
-      value: '1'
+      value: "1"
